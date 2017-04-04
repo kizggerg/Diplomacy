@@ -1,5 +1,3 @@
-//TODO: Refactor addAdjacents to account for landlocked adding water.
-
 package ubc.projects.model;
 
 import java.util.ArrayList;
@@ -29,21 +27,20 @@ public abstract class Place {
         occupied = false;
     }
 
-    private void addAdjacent(Place adjacent) {
-        adjacentPlaces.add(adjacent);
-    }
+    /**
+     * Adds adjacent to adjacentPlaces if it doesn't already contain it, and the place is not landlocked adjacent to Sea.
+     * @param adjacent    The place to be added as an adjacent place.
+     */
+    public abstract void addAdjacent(Place adjacent);
 
     /**
      * Adds this as adjacent to all place in the list and visa versa.
-     * Invariant: adjacentPlaces must not have duplicates.
+     * Invariant: adjacentPlaces must not have duplicates, nor should Sea be adjacent to landlocked lands.
      * @param adjacents   The list of properties adjacent to this.
      */
     public void addAdjacents(Collection<Place> adjacents) {
         for (Place adjacent : adjacents) {
-            if (!adjacentPlaces.contains(adjacent)) {
-                adjacentPlaces.add(adjacent);
-                adjacent.addAdjacent(this);
-            }
+            addAdjacent(adjacent);
         }
     }
 
