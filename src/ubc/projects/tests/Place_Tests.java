@@ -13,6 +13,7 @@ import static org.junit.Assert.assertTrue;
 
 /**
  * Created by greggzik on 2017-04-04.
+ * Tests the functionality of the Place class (and its subsequent children)
  */
 public class Place_Tests {
     private Place testCapital;

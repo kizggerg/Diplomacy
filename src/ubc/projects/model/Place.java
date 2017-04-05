@@ -44,6 +44,12 @@ public abstract class Place {
         }
     }
 
+    public void addAdjacents(Place... adjacents) {
+        for (Place adjacent : adjacents) {
+            addAdjacent(adjacent);
+        }
+    }
+
     /**
      * Returns whether this place is adjacent to the given place
      * @param adjacent   The place whose adjacency is questions
