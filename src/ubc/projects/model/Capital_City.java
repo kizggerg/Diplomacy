@@ -5,7 +5,7 @@ package ubc.projects.model;
  * Capital cities determine a player's influence throughout the game.
  */
 public class Capital_City extends Land {
-    private Country occupyingCountry;
+    private Country occupyingCountry; // Could be Null
 
     public Capital_City(String name, Country occupyingCountry) {
         super(name);
