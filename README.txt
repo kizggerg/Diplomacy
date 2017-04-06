@@ -11,3 +11,9 @@ I have also included many JUnit tests in tests package to ensure the quality of 
 
 For information on how Diplomacy is to be played, visit https://en.wikipedia.org/wiki/Diplomacy_(game).
 
+The map included in the files contains the standard Diplomacy game map used for this program, using the same abbreviations
+from the map. The image was taken from wikipedia commons:
+https://commons.wikimedia.org/wiki/File:DiplomacyBoard.png
+
+
+

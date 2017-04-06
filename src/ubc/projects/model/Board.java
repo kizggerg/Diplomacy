@@ -1,5 +1,8 @@
 package ubc.projects.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by greggzik on 2017-04-04.
  * Represents the Diplomacy Board layout, whose structure is constant.
@@ -7,16 +10,42 @@ package ubc.projects.model;
  */
 public class Board {
     private static Board instance = new Board();
+    private Map<String, Place> places = new HashMap<String, Place>();
 
     public static Board getInstance() {
         return instance;
     }
 
     private Board() {
-
+        setUpPlaces();
     }
 
+    /**
+     * Returns true if there is a place mapped by the key str.
+     * @param str    The abbreviation key for the place
+     * @return       True is there is a place w/ key == str.
+     */
+    public boolean containsPlace(String str) {
+        return places.containsKey(str);
+    }
+
+    /**
+     * Returns the place with key == str if the place exists, otherwise returns null.
+     * @param str   The key of the expected place.
+     * @return      The place if key maps to a valid one, else null.
+     */
+    public Place findPlace(String str) {
+        if (containsPlace(str)) return places.get(str);
+        else return null;
+    }
+
+    /**
+     * Creates and sets up place objects and adds them to the hashmap in accordance to their abbreviated names.
+     * For reference, see the Board Game map included in the source files to see which abbreviation maps to which place.
+     */
     private void setUpPlaces() {
+        // Creates Place Objects
+
         // Capital Cities
         Capital_City bre = new Capital_City("Brest", false, Country.FRANCE);
         Capital_City par = new Capital_City("Paris", true, Country.FRANCE);
@@ -98,6 +127,8 @@ public class Board {
         Land alb = new Land("Albania", false);
         Land trl = new Land("Tyrolia", true);
 
+        // Adds adjacents to all places
+
         nat.addAdjacents(mid, irl, lpl, cly, nrg);
         nrg.addAdjacents(cly, edi, nth, nwy);
         bar.addAdjacents(stp, nwy);
@@ -117,7 +148,6 @@ public class Board {
         aeg.addAdjacents(gre, smy, bul, con, eas);
         eas.addAdjacents(smy, syr);
         bla.addAdjacents(sev, rum, bul, con, ank, arm);
-
         cly.addAdjacents(edi, lpl);
         edi.addAdjacents(cly, lpl, yor);
         lpl.addAdjacents(cly, edi, yor, wal);
@@ -173,5 +203,82 @@ public class Board {
         mar.addAdjacents(bur, gas, spa, pie);
         spa.addAdjacents(por, gas, mar);
         por.addAdjacents(spa);
+
+        // Adds all places to Map
+        places.put("nat", nat);
+        places.put("nrg", nrg);
+        places.put("bar", bar);
+        places.put("mid", mid);
+        places.put("eng", eng);
+        places.put("nth", nth);
+        places.put("ska", ska);
+        places.put("hel", hel);
+        places.put("bal", bal);
+        places.put("bot", bot);
+        places.put("irl", irl);
+        places.put("wes", wes);
+        places.put("lyo", lyo);
+        places.put("tyn", tyn);
+        places.put("ion", ion);
+        places.put("adr", adr);
+        places.put("aeg", aeg);
+        places.put("eas", eas);
+        places.put("bla", bla);
+        places.put("cly", cly);
+        places.put("edi", edi);
+        places.put("lpl", lpl);
+        places.put("yor", yor);
+        places.put("wal", wal);
+        places.put("lon", lon);
+        places.put("nwy", nwy);
+        places.put("swe", swe);
+        places.put("fin", fin);
+        places.put("stp", stp);
+        places.put("lvn", lvn);
+        places.put("mos", mos);
+        places.put("sev", sev);
+        places.put("war", war);
+        places.put("ukr", ukr);
+        places.put("arm", arm);
+        places.put("syr", syr);
+        places.put("smy", smy);
+        places.put("ank", ank);
+        places.put("con", con);
+        places.put("gre", gre);
+        places.put("bul", bul);
+        places.put("alb", alb);
+        places.put("ser", ser);
+        places.put("rum", rum);
+        places.put("tri", tri);
+        places.put("bud", bud);
+        places.put("gal", gal);
+        places.put("vie", vie);
+        places.put("trl", trl);
+        places.put("boh", boh);
+        places.put("sil", sil);
+        places.put("pru", pru);
+        places.put("ber", ber);
+        places.put("mun", mun);
+        places.put("ruh", ruh);
+        places.put("kie", kie);
+        places.put("den", den);
+        places.put("hol", hol);
+        places.put("bel", bel);
+        places.put("pic", pic);
+        places.put("bur", bur);
+        places.put("par", par);
+        places.put("bre", bre);
+        places.put("gas", gas);
+        places.put("por", por);
+        places.put("spa", spa);
+        places.put("mar", mar);
+        places.put("pie", pie);
+        places.put("tus", tus);
+        places.put("rom", rom);
+        places.put("nap", nap);
+        places.put("app", app);
+        places.put("ven", ven);
+        places.put("naf", naf);
+        places.put("tun", tun);
     }
 }
