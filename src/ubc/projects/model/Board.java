@@ -83,24 +83,24 @@ public class Board {
         Capital_City hol = new Capital_City("Holland", false, null);
 
         // Seas
-        Sea nat = new Sea("North Atlantic");
+        Sea nat = new Sea("North Atlantic Sea");
         Sea nrg = new Sea("Norwegian Sea");
         Sea bar = new Sea("Barents Sea");
-        Sea irl = new Sea("Irish Sea");
+        Sea iri = new Sea("Irish Sea");
         Sea nth = new Sea("North Sea");
         Sea eng = new Sea("English Channel");
-        Sea ska = new Sea("Skagerrak");
+        Sea ska = new Sea("Skagerrak Strait");
         Sea hel = new Sea("Helgoland Bight");
         Sea bal = new Sea("Baltic Sea");
         Sea bot = new Sea("Gulf of Bothnia");
-        Sea mid = new Sea("Mid Atlantic");
-        Sea wes = new Sea("West Mediterranean");
+        Sea mid = new Sea("Mid Atlantic Sea");
+        Sea wes = new Sea("West Mediterranean Sea");
         Sea lyo = new Sea("Gulf of Lyon");
         Sea tyn = new Sea("Tyrhennian Sea");
         Sea adr = new Sea("Adriatic Sea");
         Sea ion = new Sea("Ionian Sea");
         Sea aeg = new Sea("Aegean Sea");
-        Sea eas = new Sea("East Mediterranean");
+        Sea eas = new Sea("East Mediterranean Sea");
         Sea bla = new Sea("Black Sea");
 
         // Other Lands
@@ -129,17 +129,17 @@ public class Board {
 
         // Adds adjacents to all places
 
-        nat.addAdjacents(mid, irl, lpl, cly, nrg);
-        nrg.addAdjacents(cly, edi, nth, nwy);
+        nat.addAdjacents(mid, iri, lpl, cly, nrg);
+        nrg.addAdjacents(cly, edi, nth, nwy, bar);
         bar.addAdjacents(stp, nwy);
-        irl.addAdjacents(mid, eng, wal, lpl);
+        iri.addAdjacents(mid, eng, wal, lpl);
         eng.addAdjacents(mid, wal, lon, bre, pic, bel, nth);
         nth.addAdjacents(edi, yor, lon, bel, hol, hel, den, ska, nwy);
         hel.addAdjacents(hol, den, kie);
         ska.addAdjacents(nwy, swe, den, bal);
         bal.addAdjacents(swe, den, kie, ber, pru, lvn, bot);
         bot.addAdjacents(swe, fin, stp, lvn);
-        mid.addAdjacents(bre, gas, spa, por, naf);
+        mid.addAdjacents(bre, gas, spa, por, naf, wes);
         wes.addAdjacents(naf, spa, lyo, tyn, tun);
         lyo.addAdjacents(spa, mar, pie, tus, tyn);
         tyn.addAdjacents(tun, ion, nap, rom, tus);
@@ -215,7 +215,7 @@ public class Board {
         places.put("hel", hel);
         places.put("bal", bal);
         places.put("bot", bot);
-        places.put("irl", irl);
+        places.put("iri", iri);
         places.put("wes", wes);
         places.put("lyo", lyo);
         places.put("tyn", tyn);

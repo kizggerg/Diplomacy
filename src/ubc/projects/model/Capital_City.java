@@ -17,6 +17,8 @@ public class Capital_City extends Land {
         this.occupyingCountry = occupyingCountry;
     }
 
+    public Country getOccupyingCountry() {return occupyingCountry;}
+
     public void changeOccupation(Country country) {
         occupyingCountry = country;
     }

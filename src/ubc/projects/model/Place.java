@@ -19,6 +19,10 @@ public abstract class Place {
         adjacentPlaces = new ArrayList<Place>();
     }
 
+    public String getName() {
+        return name;
+    }
+
     public void occupy() {
         occupied = true;
     }
