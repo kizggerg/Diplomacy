@@ -59,7 +59,7 @@ public class Board {
         Capital_City con = new Capital_City("Constantinople", false, Country.TURKEY);
         Capital_City smy = new Capital_City("Smyrna", false, Country.TURKEY);
         Capital_City ank = new Capital_City("Ankara", false, Country.TURKEY);
-        Capital_City sev = new Capital_City("Stevastopol", false, Country.RUSSIA);
+        Capital_City sev = new Capital_City("Sevastopol", false, Country.RUSSIA);
         Capital_City mos = new Capital_City("Moscow", true, Country.RUSSIA);
         Capital_City war = new Capital_City("Warsaw", true, Country.RUSSIA);
         Capital_City stp = new Capital_City("Saint Petersburg", false, Country.RUSSIA);
@@ -96,7 +96,7 @@ public class Board {
         Sea mid = new Sea("Mid Atlantic Sea");
         Sea wes = new Sea("West Mediterranean Sea");
         Sea lyo = new Sea("Gulf of Lyon");
-        Sea tyn = new Sea("Tyrhennian Sea");
+        Sea tyn = new Sea("Tyrrhenian Sea");
         Sea adr = new Sea("Adriatic Sea");
         Sea ion = new Sea("Ionian Sea");
         Sea aeg = new Sea("Aegean Sea");
