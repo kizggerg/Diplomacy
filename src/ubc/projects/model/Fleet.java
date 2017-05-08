@@ -11,4 +11,8 @@ public class Fleet extends Unit {
         super(location);
     }
 
+    public Fleet(Place location, String coast) {
+        super(location); //TODO: Implement
+    }
+
 }

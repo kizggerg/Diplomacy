@@ -11,7 +11,7 @@ public class Land extends Place {
     private boolean landlocked;
 
     public Land (String name) {
-        super(name);
+        super(name); landlocked = false;
     }
 
     public Land (String name, boolean landlocked) {
@@ -31,7 +31,7 @@ public class Land extends Place {
      * Adds the adjacent place if it isn't already added or if this is landlocked and the adjacent is a Sea
      * @param adjacent    The place to be added as an adjacent place.
      */
-    public void addAdjacent(Place adjacent) {
+    protected void addAdjacent(Place adjacent) {
         if (landlocked && (adjacent instanceof Sea)) return;
 
         if (!adjacentPlaces.contains(adjacent)) {

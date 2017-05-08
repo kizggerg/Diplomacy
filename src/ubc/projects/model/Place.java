@@ -35,19 +35,13 @@ public abstract class Place {
      * Adds adjacent to adjacentPlaces if it doesn't already contain it, and the place is not landlocked adjacent to Sea.
      * @param adjacent    The place to be added as an adjacent place.
      */
-    public abstract void addAdjacent(Place adjacent);
+    protected abstract void addAdjacent(Place adjacent);
 
     /**
-     * Adds this as adjacent to all place in the list and visa versa.
+     * Adds this as adjacent to all places in adjacents and visa versa.
      * Invariant: adjacentPlaces must not have duplicates, nor should Sea be adjacent to landlocked lands.
-     * @param adjacents   The list of properties adjacent to this.
+     * @param adjacents   The properties adjacent to this.
      */
-    public void addAdjacents(Collection<Place> adjacents) {
-        for (Place adjacent : adjacents) {
-            addAdjacent(adjacent);
-        }
-    }
-
     public void addAdjacents(Place... adjacents) {
         for (Place adjacent : adjacents) {
             addAdjacent(adjacent);

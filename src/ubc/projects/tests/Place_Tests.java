@@ -1,5 +1,6 @@
 package ubc.projects.tests;
 
+import ubc.projects.exceptions.PlaceDoesNotExistException;
 import ubc.projects.model.*;
 import org.junit.*;
 
@@ -19,12 +20,14 @@ public class Place_Tests {
     private Place testCapital;
     private Place testLand;
     private Place testSea;
+    private Exceptional_Capital_City testExceptionalCapital;
 
     @Before
     public void setUp() {
         testCapital = new Capital_City("a", false, Country.ENGLAND);
         testLand = new Land("b", true);
         testSea = new Sea("c");
+        testExceptionalCapital = new Exceptional_Capital_City("d", Country.RUSSIA);
     }
 
     @Test
@@ -32,28 +35,27 @@ public class Place_Tests {
      * Tests the functionality of addAdjacents in normal circumstances
      */
     public void testAdjacentAddsNormal() {
-        List<Place> temp = new ArrayList<Place>();
-        temp.add(testSea);
-        temp.add(testLand);
-
         try {
-            testCapital.addAdjacents(temp);
+            testCapital.addAdjacents(testSea, testLand, testExceptionalCapital);
 
             // Tests to see if places were actually added
             assertTrue(testCapital.isAdjacentTo(testLand));
             assertTrue(testCapital.isAdjacentTo(testSea));
-            assertEquals(2, testCapital.numberOfAdjacents());
+            assertTrue(testCapital.isAdjacentTo(testExceptionalCapital));
+            assertEquals(3, testCapital.numberOfAdjacents());
 
             assertTrue(testLand.isAdjacentTo(testCapital));
             assertEquals(1,testLand.numberOfAdjacents());
-            //assertTrue(testSea.isAdjacentTo(testCapital));
-            //assertEquals(1, testSea.numberOfAdjacents());
+            assertTrue(testSea.isAdjacentTo(testCapital));
+            assertEquals(1, testSea.numberOfAdjacents());
+            assertTrue(testExceptionalCapital.isAdjacentTo(testCapital));
+            assertEquals(1,testExceptionalCapital.numberOfAdjacents());
 
             // Tests to see if places are not duplicated
-            testCapital.addAdjacents(temp);
-            assertEquals(2, testCapital.numberOfAdjacents());
+            testCapital.addAdjacents(testSea, testLand, testExceptionalCapital);
+            assertEquals(3, testCapital.numberOfAdjacents());
 
-        } catch (StackOverflowError e) {  // Occurs in infinite mutual recursion addition
+        } catch (StackOverflowError e) {  // Occurs in infinite mutual recursion
             e.printStackTrace();
             fail();
         }
@@ -64,19 +66,32 @@ public class Place_Tests {
      * Tests addAdjacents when adding a Sea place to be adjacent to a landlocked place and visa versa
      */
     public void testAdjacentToWater() {
-        List<Place> temp = new ArrayList<Place>();
-        temp.add(testSea);
-        temp.add(testCapital);
-
-        testLand.addAdjacents(temp);
+        testLand.addAdjacents(testSea, testCapital);
         assertEquals(1, testLand.numberOfAdjacents());
         assertFalse(testLand.isAdjacentTo(testSea));
         assertFalse(testSea.isAdjacentTo(testLand));
 
-        testSea.addAdjacent(testLand);
+        testSea.addAdjacents(testLand);
         assertFalse(testSea.isAdjacentTo(testLand));
         assertFalse(testLand.isAdjacentTo(testSea));
         assertEquals(0, testSea.numberOfAdjacents());
-
     }
+
+    @Test
+    /**
+     * Tests the functionality of adding adjacents to exceptional coasts.
+     */
+    public void testExceptionalCapitalCoasts() {
+        testExceptionalCapital.addAdjacentsSouthCoast(testLand, testSea);
+        testExceptionalCapital.addAdjacentsOtherCoast(testCapital, testSea);
+        assertTrue(testExceptionalCapital.getSouthCoast().isAdjacentTo(testLand));
+        assertTrue(testExceptionalCapital.getSouthCoast().isAdjacentTo(testSea));
+        assertFalse(testExceptionalCapital.getSouthCoast().isAdjacentTo(testCapital));
+        assertEquals(2, testExceptionalCapital.getSouthCoast().numberOfAdjacents());
+        assertTrue(testExceptionalCapital.getOtherCoast().isAdjacentTo(testCapital));
+        assertTrue(testExceptionalCapital.getOtherCoast().isAdjacentTo(testSea));
+        assertFalse(testExceptionalCapital.getOtherCoast().isAdjacentTo(testLand));
+        assertEquals(2, testExceptionalCapital.getOtherCoast().numberOfAdjacents());
+    }
+
 }
