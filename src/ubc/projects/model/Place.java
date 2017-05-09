@@ -23,6 +23,8 @@ public abstract class Place {
         return name;
     }
 
+    public boolean isOccupied() {return occupied;}
+
     public void occupy() {
         occupied = true;
     }
@@ -65,10 +67,10 @@ public abstract class Place {
         return adjacentPlaces.size();
     }
 
-    @Override
     /**
      * Two places are equal if they have the same name.
      */
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Place)) return false;

@@ -1,5 +1,6 @@
 package ubc.projects.model;
 
+import org.junit.Before;
 import ubc.projects.exceptions.PlaceDoesNotExistException;
 
 import java.util.List;
@@ -7,7 +8,7 @@ import java.util.List;
 /**
  * Created by greggzik on 2017-04-10.
  * Players are individual players of the game.
- * TODO: Test
+ * TODO: Test Basic Functionality
  */
 public class Player {
     private final Country country;
@@ -17,7 +18,11 @@ public class Player {
     public Player(Country country) {
         this.country = country;
         initializeCentres();
-        }
+    }
+
+     public Country getCountry() {
+        return country;
+     }
 
     /**
      * Adds a army at the given place to the players list of units.
@@ -54,6 +59,70 @@ public class Player {
         if (place == null) throw new PlaceDoesNotExistException("Cannot add unit: Place does not exist");
         Unit unit = new Fleet(place, coast);
         units.add(unit);
+    }
+
+    /**
+     * Returns true if the place corresponding to the given name is occupied by this player.
+     * @param name     The abbreviated name of the place.
+     * @return         True if this player occupies the place, false otherwise.
+     */
+    public boolean occupies(String name) {
+        Place place = Board.getInstance().findPlace(name);
+        if (place == null) return false;
+        if (!place.isOccupied()) return false;
+
+        for (Unit unit : units) {
+            if (unit.getLocation().equals(place)) return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Returns true if the place corresponding to the given name is occupied by this player with an army.
+     * @param name     The abbreviated name of the place.
+     * @return         True if this player occupies the place with an army, false otherwise.
+     */
+    public boolean occupiesWithArmy(String name) {
+        Place place = Board.getInstance().findPlace(name);
+        if (place == null) return false;
+        if (!place.isOccupied()) return false;
+
+        for (Unit unit : units) {
+            if (unit instanceof Army && unit.getLocation().equals(place)) return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Returns true if the place corresponding to the given name is occupied by this player with a fleet.
+     * @param name     The abbreviated name of the place.
+     * @return         True if this player occupies the place with a fleet, false otherwise.
+     */
+    public boolean occupiesWithFleet(String name) {
+        Place place = Board.getInstance().findPlace(name);
+        if (place == null) return false;
+        if (!place.isOccupied()) return false;
+
+        if (place instanceof Exceptional_Capital_City) {
+            Place south = ((Exceptional_Capital_City) place).getSouthCoast();
+            Place other = ((Exceptional_Capital_City) place).getOtherCoast();
+
+            for (Unit unit : units) {
+                if (unit instanceof Fleet && (unit.getLocation().equals(south) || unit.getLocation().equals(other)))
+                    return true;
+            }
+
+            return false;
+        }
+        else {
+            for (Unit unit : units) {
+                if (unit instanceof Fleet && unit.getLocation().equals(place)) return true;
+            }
+
+            return false;
+        }
     }
 
     /**
@@ -99,14 +168,32 @@ public class Player {
                     addArmy("mos");
                     addArmy("war");
                     addFleet("sev");
-                    addFleet("stp");
+                    addFleet("stp", "SC");
                     break;
+                default: break;
             }
         }
         catch (PlaceDoesNotExistException e) {
-            throw new UnsupportedOperationException("Initialization Failed");
+            System.out.println(e.toString());
+            System.exit(1);
         }
     }
 
+    /**
+     * Two players are equal if they control the same country.
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Player)) return false;
 
+        Player player = (Player) o;
+
+        return country == player.country;
+    }
+
+    @Override
+    public int hashCode() {
+        return country.hashCode();
+    }
 }
