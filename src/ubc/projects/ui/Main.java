@@ -2,23 +2,25 @@ package ubc.projects.ui;
 
 import javafx.application.Application;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.util.Observable;
 
+//TODO: Continue Implementation.
 /**
  * Constructs the GUI
  */
 public class Main  extends Application {
-    Label title;
-    Button england, france, germany, russia, turkey, italy, austria;
+    Stage window;
+    Scene startup, map;
+
 
     public static void main(String[] args) {
         launch(args);
@@ -31,50 +33,61 @@ public class Main  extends Application {
      */
     @Override
     public void start(Stage primaryStage) throws Exception {
-        primaryStage.setTitle("Diplomacy");
-        StackPane layout = new StackPane();
-        Scene scene = new Scene(layout, 300, 250);
-        setStartScreen(layout);
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        window = primaryStage;
+        window.setTitle("Diplomacy");
+
+        VBox layout1 = new VBox(20);
+        StackPane layout2 = new StackPane();
+        startup = new Scene(layout1, 800, 800);
+        map = new Scene(layout2, 800, 800);
+        setStartScreen(layout1);
+        setMapScene(layout2);
+
+        window.setScene(startup);
+        window.show();
     }
 
     /**
      * Constructs the initial starting screen.
      * @param layout  The layout for the scene.
      */
-    private void setStartScreen(StackPane layout) {
-        // TODO: Change Placement of Buttons on screen, Implment handle functionality.
-        title = new Label("Choose your country:");
+    private void setStartScreen(VBox layout) {
+        Label text = new Label("Choose your country:");
         ObservableList<Node> children = layout.getChildren();
+        children.add(text);
 
-        england = new Button("United Kingdom");
-        england.setOnAction(e -> System.out.println("England Pressed"));
+        Button england = new Button("United Kingdom");
+        england.setOnAction(e -> window.setScene(map));
         children.add(england);
 
-        france = new Button("France");
-        france.setOnAction(e -> System.out.println("France Pressed"));
+        Button france = new Button("France");
+        france.setOnAction(e -> window.setScene(map));
         children.add(france);
 
-        germany = new Button("Germany");
-        germany.setOnAction(e -> System.out.println("Germany Pressed"));
+        Button germany = new Button("Germany");
+        germany.setOnAction(e -> window.setScene(map));
         children.add(germany);
 
-        russia = new Button("Russia");
-        russia.setOnAction(e -> System.out.println("Russia Pressed"));
+        Button russia = new Button("Russia");
+        russia.setOnAction(e -> window.setScene(map));
         children.add(russia);
 
-        turkey = new Button("Ottoman Turkey");
-        turkey.setOnAction(e -> System.out.println("Turkey Pressed"));
+        Button turkey = new Button("Ottoman Turkey");
+        turkey.setOnAction(e -> window.setScene(map));
         children.add(turkey);
 
-        italy = new Button("Italy");
-        italy.setOnAction(e -> System.out.println("Italy Pressed"));
+        Button italy = new Button("Italy");
+        italy.setOnAction(e -> window.setScene(map));
         children.add(italy);
 
-        austria = new Button("Austria-Hungary");
-        austria.setOnAction(e -> System.out.println("Austria Pressed"));
+        Button austria = new Button("Austria-Hungary");
+        austria.setOnAction(e -> window.setScene(map));
         children.add(austria);
+    }
+
+    private void setMapScene(StackPane layout) {
+        Label label = new Label("This is another scene");
+        layout.getChildren().add(label);
     }
 
 }
