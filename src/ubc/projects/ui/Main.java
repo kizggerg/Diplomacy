@@ -16,7 +16,7 @@ import java.util.Observable;
 /**
  * Constructs the GUI
  */
-public class Main  extends Application implements EventHandler<ActionEvent>{
+public class Main  extends Application {
     Label title;
     Button england, france, germany, russia, turkey, italy, austria;
 
@@ -44,45 +44,37 @@ public class Main  extends Application implements EventHandler<ActionEvent>{
      * @param layout  The layout for the scene.
      */
     private void setStartScreen(StackPane layout) {
-        // TODO: Change Placement of Buttons on screen.
+        // TODO: Change Placement of Buttons on screen, Implment handle functionality.
         title = new Label("Choose your country:");
         ObservableList<Node> children = layout.getChildren();
 
         england = new Button("United Kingdom");
-        england.setOnAction(this);
+        england.setOnAction(e -> System.out.println("England Pressed"));
         children.add(england);
 
         france = new Button("France");
-        france.setOnAction(this);
+        france.setOnAction(e -> System.out.println("France Pressed"));
         children.add(france);
 
         germany = new Button("Germany");
-        germany.setOnAction(this);
+        germany.setOnAction(e -> System.out.println("Germany Pressed"));
         children.add(germany);
 
         russia = new Button("Russia");
-        russia.setOnAction(this);
+        russia.setOnAction(e -> System.out.println("Russia Pressed"));
         children.add(russia);
 
         turkey = new Button("Ottoman Turkey");
-        turkey.setOnAction(this);
+        turkey.setOnAction(e -> System.out.println("Turkey Pressed"));
         children.add(turkey);
 
         italy = new Button("Italy");
-        italy.setOnAction(this);
+        italy.setOnAction(e -> System.out.println("Italy Pressed"));
         children.add(italy);
 
         austria = new Button("Austria-Hungary");
-        austria.setOnAction(this);
+        austria.setOnAction(e -> System.out.println("Austria Pressed"));
         children.add(austria);
     }
 
-    /**
-     * Handles when the buttons are pressed during the start up screen.
-     * @param event     The event of the pressed button.
-     */
-    @Override
-    public void handle(ActionEvent event) {
-        System.out.println("The user pressed a button"); //TODO: Implement Desired Functinality
-    }
 }
