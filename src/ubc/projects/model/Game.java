@@ -6,25 +6,15 @@ import java.util.Set;
 /**
  * Created by greggzik on 2017-05-07.
  * The Diplomacy Board Game
- * Singleton Design Pattern Used
  * TODO: Test Basic Functionality
  */
 public class Game {
-    private static Game instance;
     private Board board;
     private Set<Player> players;
 
-    private Game() {
-       board = Board.getInstance();
-       initializePlayers();
-    }
-
-    public static Game getInstance() {
-        if (instance == null) {
-            instance = new Game();
-        }
-
-        return instance;
+    public Game() {
+       //board = Board.getInstance();
+       //initializePlayers();
     }
 
     /**

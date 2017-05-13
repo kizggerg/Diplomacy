@@ -15,6 +15,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import ubc.projects.model.Game;
 
 
 //TODO: Continue Implementation.
@@ -23,7 +24,7 @@ import javafx.stage.Stage;
  */
 public class Main  extends Application {
     Stage window;
-    Scene startup, newGame, map;
+    Scene startup, map;
 
 
     public static void main(String[] args) {
@@ -40,16 +41,10 @@ public class Main  extends Application {
         window = primaryStage;
         window.setTitle("Diplomacy");
 
-        VBox layout1 = new VBox(20);
-        VBox layout2 = new VBox(20);
-        BorderPane layout3 = new BorderPane();
+        VBox layout = new VBox(20);
 
-        startup = new Scene(layout1, 800, 800);
-        newGame = new Scene(layout2, 800, 800);
-        map = new Scene(layout3, 800, 800);
-        setStartScreen(layout1);
-        setNewGameScreen(layout2);
-        setMapScene(layout3);
+        startup = new Scene(layout, 500, 500);
+        setStartScreen(layout);
 
         window.setScene(startup);
         window.show();
@@ -64,83 +59,12 @@ public class Main  extends Application {
         Label title = new Label("Diplomacy - Coded by Gregory Gzik");
         Button newgame = new Button("Start a new game");
         Button loadgame = new Button("Load from a previous save");
-        newgame.setOnAction(e -> window.setScene(newGame));
+
+        newgame.setOnAction(e -> {
+            map = new Game_UI(new BorderPane(), 1000, 800, new Game());
+            window.setScene(map);
+        });
+        loadgame.setOnAction(e -> {});
         layout.getChildren().addAll(title, newgame, loadgame);
     }
-
-    /**
-     * Constructs the initial new game screen.
-     * @param layout  The layout for the scene.
-     */
-    private void setNewGameScreen(VBox layout) {
-        Label text = new Label("First Player - Choose your Country.");
-        layout.setAlignment(Pos.CENTER);
-        ObservableList<Node> children = layout.getChildren();
-        children.add(text);
-
-        Button england = new Button("United Kingdom");
-        england.setOnAction(e -> {
-            text.setText("Next Player - Choose your Country. \n Start game when all players have countries.");
-            england.setDisable(true);
-        });
-        children.add(england);
-
-        Button france = new Button("France");
-        france.setOnAction(e -> {
-            text.setText("Next Player - Choose your Country. \n Start game when all players have countries.");
-            france.setDisable(true);
-        });
-        children.add(france);
-
-        Button germany = new Button("Germany");
-        germany.setOnAction(e -> {
-            text.setText("Next Player - Choose your Country. \n Start game when all players have countries.");
-            germany.setDisable(true);
-        });
-        children.add(germany);
-
-        Button russia = new Button("Russia");
-        russia.setOnAction(e -> {
-            text.setText("Next Player - Choose your Country. \n Start game when all players have countries.");
-            russia.setDisable(true);
-        });
-        children.add(russia);
-
-        Button turkey = new Button("Ottoman Turkey");
-        turkey.setOnAction(e -> {
-            text.setText("Next Player - Choose your Country. \n Start game when all players have countries.");
-            turkey.setDisable(true);
-        });
-        children.add(turkey);
-
-        Button italy = new Button("Italy");
-        italy.setOnAction(e -> {
-            text.setText("Next Player - Choose your Country. \n Start game when all players have countries.");
-            italy.setDisable(true);
-        });
-        children.add(italy);
-
-        Button austria = new Button("Austria-Hungary");
-        austria.setOnAction(e -> {
-            text.setText("Next Player - Choose your Country. \n Start game when all players have countries.");
-            austria.setDisable(true);
-        });
-        children.add(austria);
-
-        Button start = new Button("Start your Game");
-        start.setOnAction(e -> {
-           if (england.isDisable() && france.isDisable() && germany.isDisable() && russia.isDisable() &&
-                   turkey.isDisable() && italy.isDisable() && austria.isDisable())
-               window.setScene(map);
-        });
-        children.add(start);
-    }
-
-    private void setMapScene(BorderPane layout) {
-        ImageView viewer = new ImageView();
-        Image image = new Image("file:Map_with_Abbreviations.png");
-        viewer.setImage(image);
-        layout.setCenter(viewer);
-    }
-
 }
