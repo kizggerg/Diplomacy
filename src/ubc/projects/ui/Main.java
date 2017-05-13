@@ -63,6 +63,7 @@ public class Main  extends Application {
         newgame.setOnAction(e -> {
             map = new Game_UI(new BorderPane(), 1000, 800, new Game());
             window.setScene(map);
+            window.centerOnScreen();
         });
         loadgame.setOnAction(e -> {});
         layout.getChildren().addAll(title, newgame, loadgame);

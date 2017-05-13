@@ -11,10 +11,14 @@ import java.util.Set;
 public class Game {
     private Board board;
     private Set<Player> players;
+    private int year;
+    private Season season;
 
     public Game() {
-       //board = Board.getInstance();
-       //initializePlayers();
+       board = Board.getInstance();
+       year = 1901;
+       season = Season.SPRING;
+       initializePlayers();
     }
 
     /**
@@ -54,8 +58,8 @@ public class Game {
         }
     }
 
-
-
-
+    public String getPhase() {
+        return season.toString() + " " + year;
+    }
 
 }

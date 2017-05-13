@@ -12,21 +12,24 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import ubc.projects.model.Game;
+import ubc.projects.model.*;
 
 import java.util.IllegalFormatException;
 
 
 /**
  * Created by greggzik on 2017-05-12.
+ * The main game scene.
  */
 public class Game_UI extends Scene {
-    Game game;
-    ImageView viewer;
-    Image map;
-    BorderPane mainLayout;
-    VBox countries;
-    VBox orders;
+    private Game game;
+    private ImageView viewer;
+    private Image map;
+    private BorderPane mainLayout;
+    private VBox countries;
+    private VBox orders;
+    private String phase;
+
 
     /**
      * Creates a Scene for a specific root Node with a specific size.
@@ -47,39 +50,89 @@ public class Game_UI extends Scene {
         viewer.setImage(map);
         mainLayout.setCenter(viewer);
         countries = new VBox(20);
+        orders = new VBox(20);
+        phase = this.game.getPhase();
+        setUpGeneralFrame();
         setUpCountries();
-        orders = new VBox();
-        setUpOrders();
+        updateOrdersPane(null);
+    }
+
+    /**
+     * Sets up the graphics of the scene
+     */
+    private void setUpGeneralFrame() {
         mainLayout.setLeft(countries);
         mainLayout.setRight(orders);
         HBox top = new HBox();
         HBox bottom = new HBox();
-        Label title = new Label("Diplomacy");
+        Label title = new Label(phase);
         top.getChildren().add(title);
-        title.setAlignment(Pos.CENTER);
         Button execute = new Button("End Turn");
         bottom.getChildren().add(execute);
-        execute.setAlignment(Pos.CENTER);
         mainLayout.setTop(title);
         mainLayout.setBottom(execute);
-
+        mainLayout.setAlignment(title, Pos.CENTER);
+        mainLayout.setAlignment(countries, Pos.CENTER);
+        mainLayout.setAlignment(orders, Pos.CENTER);
     }
 
+    /**
+     * Sets up the country pane.
+     */
     private void setUpCountries() {
-        Button england = new Button("England");
-        Button france = new Button("France");
-        Button austria = new Button("Austria-Hungary");
-        Button germany = new Button("Germany");
-        Button italy = new Button("Italy");
-        Button turkey = new Button("Ottoman-Turkey");
-        Button russia = new Button("Russia");
+        Button england = new Button("England"); england.setOnAction(e -> updateOrdersPane(Country.ENGLAND));
+        Button france = new Button("France"); france.setOnAction(e -> updateOrdersPane(Country.FRANCE));
+        Button austria = new Button("Austria-Hungary"); austria.setOnAction(e -> updateOrdersPane(Country.AUSTRA_HUNGARY));
+        Button germany = new Button("Germany"); germany.setOnAction(e -> updateOrdersPane(Country.GERMANY));
+        Button italy = new Button("Italy"); italy.setOnAction(e -> updateOrdersPane(Country.ITALY));
+        Button turkey = new Button("Ottoman-Turkey"); turkey.setOnAction(e -> updateOrdersPane(Country.TURKEY));
+        Button russia = new Button("Russia"); russia.setOnAction(e -> updateOrdersPane(Country.RUSSIA));
         countries.getChildren().addAll(england, france, austria, germany, italy, turkey, russia);
         countries.setAlignment(Pos.CENTER);
     }
 
-    private void setUpOrders() {
-        Label temp = new Label("This is temporary");
-        orders.getChildren().add(temp);
-        orders.setAlignment(Pos.CENTER);
+    /**
+     * Updates the orders pane when a country is selected.
+     */
+    private void updateOrdersPane(Country country) {
+        orders.getChildren().clear();
+
+        if (country == null) {
+            Label initialOrderLabel = new Label("Select a Country to give orders.");
+            orders.getChildren().add(initialOrderLabel);
+            orders.setAlignment(Pos.CENTER);
+            return;
+        }
+
+        else {
+            Player selected = game.getPlayer(country);
+
+            for (Unit unit : selected.getUnits()) {
+                HBox unitBox = new HBox(10);
+                Label unitName = new Label();
+
+                if (unit instanceof Army) {
+                    unitName.setText("Army at " + unit.getLocation().toString() + ": ");
+                } else {
+                    unitName.setText("Fleet at " + unit.getLocation().toString() + ": ");
+                }
+
+                unitBox.getChildren().add(unitName);
+                orders.getChildren().add(unitBox);
+            }
+
+        }
+
+        switch (country) {
+            case ENGLAND: break;
+            case FRANCE: break;
+            case ITALY: break;
+            case GERMANY: break;
+            case TURKEY: break;
+            case RUSSIA: break;
+            case AUSTRA_HUNGARY: break;
+            default: {}
+        }
+
     }
 }

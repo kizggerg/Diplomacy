@@ -3,6 +3,8 @@ package ubc.projects.model;
 import org.junit.Before;
 import ubc.projects.exceptions.PlaceDoesNotExistException;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -17,6 +19,7 @@ public class Player {
 
     public Player(Country country) {
         this.country = country;
+        units = new ArrayList<>();
         initializeCentres();
     }
 
@@ -31,7 +34,7 @@ public class Player {
      */
     public void addArmy(String name) throws PlaceDoesNotExistException {
         Place place = Board.getInstance().findPlace(name);
-        if (place == null) throw new PlaceDoesNotExistException("Cannot add unit: Place does not exist");
+        if (place == null) throw new PlaceDoesNotExistException("Cannot add unit: Place " + name + " does not exist");
         Unit unit = new Army(place);
         units.add(unit);
     }
@@ -43,7 +46,7 @@ public class Player {
      */
     public void addFleet(String name) throws PlaceDoesNotExistException {
         Place place = Board.getInstance().findPlace(name);
-        if (place == null) throw new PlaceDoesNotExistException("Cannot add unit: Place does not exist");
+        if (place == null) throw new PlaceDoesNotExistException("Cannot add unit: Place " + name + " does not exist");
         Unit unit = new Fleet(place);
         units.add(unit);
     }
@@ -56,9 +59,17 @@ public class Player {
      */
     public void addFleet(String name, String coast) throws PlaceDoesNotExistException {
         Place place = Board.getInstance().findPlace(name);
-        if (place == null) throw new PlaceDoesNotExistException("Cannot add unit: Place does not exist");
+        if (place == null) throw new PlaceDoesNotExistException("Cannot add unit: Place " + name + " does not exist");
         Unit unit = new Fleet(place, coast);
         units.add(unit);
+    }
+
+    /**
+     * Returns an unmodifiable list of units.
+     * @return    A list of units
+     */
+    public List<Unit> getUnits() {
+        return Collections.unmodifiableList(units);
     }
 
     /**
@@ -134,7 +145,7 @@ public class Player {
         try {
             switch (country) {
                 case ENGLAND:
-                    addArmy("lvp");
+                    addArmy("lpl");
                     addFleet("lon");
                     addFleet("edi");
                     break;
