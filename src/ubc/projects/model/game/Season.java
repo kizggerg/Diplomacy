@@ -1,4 +1,4 @@
-package ubc.projects.model;
+package ubc.projects.model.game;
 
 /**
  * Created by greggzik on 2017-05-13.

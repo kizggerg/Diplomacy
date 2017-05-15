@@ -1,4 +1,7 @@
-package ubc.projects.model;
+package ubc.projects.model.game;
+
+import ubc.projects.model.map.Board;
+import ubc.projects.model.map.Country;
 
 import java.util.HashSet;
 import java.util.Set;

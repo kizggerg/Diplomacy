@@ -1,6 +1,4 @@
-package ubc.projects.model;
-
-import java.util.Collection;
+package ubc.projects.model.map;
 
 /**
  * Created by greggzik on 2017-04-04.

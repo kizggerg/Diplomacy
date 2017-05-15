@@ -1,4 +1,4 @@
-package ubc.projects.model;
+package ubc.projects.model.map;
 
 import java.util.ArrayList;
 import java.util.Collection;

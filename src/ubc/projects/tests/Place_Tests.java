@@ -1,11 +1,7 @@
 package ubc.projects.tests;
 
-import ubc.projects.exceptions.PlaceDoesNotExistException;
-import ubc.projects.model.*;
 import org.junit.*;
-
-import java.util.ArrayList;
-import java.util.List;
+import ubc.projects.model.map.*;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertFalse;

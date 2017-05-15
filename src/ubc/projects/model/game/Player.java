@@ -1,7 +1,10 @@
-package ubc.projects.model;
+package ubc.projects.model.game;
 
-import org.junit.Before;
 import ubc.projects.exceptions.PlaceDoesNotExistException;
+import ubc.projects.model.map.Board;
+import ubc.projects.model.map.Country;
+import ubc.projects.model.map.Exceptional_Capital_City;
+import ubc.projects.model.map.Place;
 
 import java.util.ArrayList;
 import java.util.Collections;

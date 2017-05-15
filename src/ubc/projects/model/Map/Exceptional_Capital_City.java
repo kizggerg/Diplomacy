@@ -1,8 +1,4 @@
-package ubc.projects.model;
-
-import java.util.HashSet;
-import java.util.Observable;
-import java.util.Set;
+package ubc.projects.model.map;
 
 /**
  * Created by greggzik on 2017-04-28.

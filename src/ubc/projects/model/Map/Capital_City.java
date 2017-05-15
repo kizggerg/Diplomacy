@@ -1,4 +1,4 @@
-package ubc.projects.model;
+package ubc.projects.model.map;
 
 /**
  * Created by greggzik on 2017-04-04.

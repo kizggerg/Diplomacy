@@ -1,6 +1,5 @@
 package ubc.projects.ui;
 
-import com.sun.javaws.exceptions.BadFieldException;
 import javafx.beans.NamedArg;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -12,9 +11,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import ubc.projects.model.*;
-
-import java.util.IllegalFormatException;
+import ubc.projects.model.map.Country;
+import ubc.projects.model.game.Army;
+import ubc.projects.model.game.Game;
+import ubc.projects.model.game.Player;
+import ubc.projects.model.game.Unit;
 
 
 /**
@@ -121,17 +122,6 @@ public class Game_UI extends Scene {
                 orders.getChildren().add(unitBox);
             }
 
-        }
-
-        switch (country) {
-            case ENGLAND: break;
-            case FRANCE: break;
-            case ITALY: break;
-            case GERMANY: break;
-            case TURKEY: break;
-            case RUSSIA: break;
-            case AUSTRA_HUNGARY: break;
-            default: {}
         }
 
     }

@@ -2,11 +2,7 @@ package ubc.projects.tests;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import ubc.projects.model.*;
-
-import java.beans.VetoableChangeListener;
+import ubc.projects.model.map.*;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertFalse;
