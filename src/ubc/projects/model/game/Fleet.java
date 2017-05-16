@@ -2,16 +2,17 @@ package ubc.projects.model.game;
 
 import ubc.projects.exceptions.IllegalOrderException;
 import ubc.projects.exceptions.PlaceDoesNotExistException;
+import ubc.projects.model.game.orders.Convoy;
 import ubc.projects.model.game.orders.Move;
 import ubc.projects.model.game.orders.Support;
 import ubc.projects.model.map.Exceptional_Capital_City;
 import ubc.projects.model.map.Land;
 import ubc.projects.model.map.Place;
+import ubc.projects.model.map.Sea;
 
 /**
  * Created by greggzik on 2017-04-10.
  * A fleet of some player
- * TODO: Test Basic Functionality, Implement Move and Retreat Functionality.
  */
 public class Fleet extends Unit {
 
@@ -80,5 +81,17 @@ public class Fleet extends Unit {
         if (destination.equals(location)) throw new IllegalOrderException("This is not a support, make a hold order instead.");
         if (!location.isAdjacentTo(destination)) throw new IllegalOrderException("Destination is not Adjacent to Current Location.");
         order = new Support(destination, unit);
+    }
+
+    /**
+     * Sets up a convoy order on the Unit
+     * @param destination             The place where the army ought to end up.
+     * @param unitToConvoy            The army to convoy
+     * @throws IllegalOrderException  Thrown when destination is not Land, or if this location is not a Sea.
+     */
+    public void setToConvoy(Place destination, Army unitToConvoy) throws IllegalOrderException {
+        if (!(location instanceof Sea)) throw new IllegalOrderException("Only fleets on the Sea can Convoy");
+        if (!(destination instanceof Land)) throw new IllegalOrderException("Cannot convoy Army to Sea");
+        order = new Convoy((Land) destination, unitToConvoy);
     }
 }

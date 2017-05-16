@@ -47,5 +47,5 @@ public abstract class Unit {
      * @param unit                    The unit whose order is being supported.
      * @throws IllegalOrderException  Thrown when the order is ill-formed.
      */
-    //public abstract void setToSupport(Place destination, Unit unit) throws IllegalOrderException;
+    public abstract void setToSupport(Place destination, Unit unit) throws IllegalOrderException;
 }
