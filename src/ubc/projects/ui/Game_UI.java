@@ -5,17 +5,21 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import ubc.projects.exceptions.IllegalOrderException;
 import ubc.projects.model.map.Country;
 import ubc.projects.model.game.Army;
 import ubc.projects.model.game.Game;
 import ubc.projects.model.game.Player;
 import ubc.projects.model.game.Unit;
+import ubc.projects.model.map.Land;
+import ubc.projects.model.map.Place;
 
 
 /**
@@ -102,7 +106,6 @@ public class Game_UI extends Scene {
             Label initialOrderLabel = new Label("Select a Country to give orders.");
             orders.getChildren().add(initialOrderLabel);
             orders.setAlignment(Pos.CENTER);
-            return;
         }
 
         else {
@@ -110,19 +113,67 @@ public class Game_UI extends Scene {
 
             for (Unit unit : selected.getUnits()) {
                 HBox unitBox = new HBox(10);
-                Label unitName = new Label();
+                Label unitName = new Label(unit.toString());
 
-                if (unit instanceof Army) {
-                    unitName.setText("Army at " + unit.getLocation().toString() + ": ");
-                } else {
-                    unitName.setText("Fleet at " + unit.getLocation().toString() + ": ");
-                }
+                ComboBox<String> theOrders = new ComboBox<>();
+                theOrders.getItems().addAll("Hold", "Move", "Support", "Convoy");
+                theOrders.setValue(unit.getOrder().getType());
 
-                unitBox.getChildren().add(unitName);
+                unitBox.getChildren().addAll(unitName, theOrders);
+                theOrders.getSelectionModel().selectedItemProperty().addListener(
+                        (a, old, orderSelected) -> handleOrdersUI(orderSelected, unit, unitBox));
+                handleOrdersUI(theOrders.getValue(), unit, unitBox);
                 orders.getChildren().add(unitBox);
             }
 
         }
+    }
 
+    /**
+     * Adds the orders UI when a selection is chosen in the ComboBox.
+     * @param order       The order chosen in the ComboBox.
+     * @param unit        The unit in which the player wishes to order.
+     * @param unitBox     The HBox containing the UI for the unit.
+     */
+    private void handleOrdersUI(String order, Unit unit, HBox unitBox) {
+        if (order.equals("Hold")) return;
+
+        boolean isArmy = (unit instanceof Army); // True for Army, False for Fleet
+        ComboBox<Place> destination = new ComboBox<>();
+        for (Place adjacent : unit.getLocation().getAdjacentPlaces()) {
+            if (isArmy) {
+                if (adjacent instanceof Land) destination.getItems().add(adjacent);
+            }
+            else {
+                if (!(adjacent instanceof Land && ((Land) adjacent).isLandlocked())) destination.getItems().add(adjacent);
+            }
+        }
+
+        switch (order) {
+            case "Move"    : {
+                destination.setPromptText("Destination");
+                destination.getSelectionModel().selectedItemProperty().addListener( (v, a, option) -> addMoveOrder(unit, option));
+                break;
+            }
+            case "Support" : break; //todo: Implement the rest
+            case  "Convoy" : break;
+            default        : break;
+        }
+
+        unitBox.getChildren().add(destination);
+    }
+
+    /**
+     * Adds a move order to the given Unit.
+     * @param unit          The unit to add the move order.
+     * @param destination   The destination of the move order.
+     */
+    private void addMoveOrder(Unit unit, Place destination) {
+        try {
+            unit.setToMove(destination);
+        }
+        catch (IllegalOrderException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }

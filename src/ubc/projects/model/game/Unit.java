@@ -11,12 +11,12 @@ import ubc.projects.model.map.Place;
  */
 public abstract class Unit {
     protected Place location;
-    protected Order order;   // Could be null
+    protected Order order;
 
     public Unit(Place location) {
         this.location = location;
         location.occupy();
-        order = null;
+        order = new Hold();
     }
 
     public Place getLocation() {
@@ -26,6 +26,8 @@ public abstract class Unit {
     public void setLocation(Place location) {
         this.location = location;
     }
+
+    public Order getOrder() {return order;}
 
     /**
      * Sets up a hold order on the unit.
@@ -48,4 +50,7 @@ public abstract class Unit {
      * @throws IllegalOrderException  Thrown when the order is ill-formed.
      */
     public abstract void setToSupport(Place destination, Unit unit) throws IllegalOrderException;
+
+    @Override
+    public abstract String toString();
 }

@@ -27,4 +27,8 @@ public class Convoy implements Order {
         route = null;
     }
 
+    @Override
+    public String getType() {
+        return "Convoy";
+    }
 }

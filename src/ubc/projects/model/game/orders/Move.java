@@ -14,4 +14,8 @@ public class Move implements Order {
         this.destination = destination;
     }
 
+    @Override
+    public String getType() {
+        return "Move";
+    }
 }

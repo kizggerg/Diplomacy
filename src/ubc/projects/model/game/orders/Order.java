@@ -6,4 +6,10 @@ package ubc.projects.model.game.orders;
  */
 public interface Order {
 
+    /**
+     * Return the name of the order type (Move, Support, Hold, or Convoy).
+     * @return    The name of the order type.
+     */
+    public String getType();
+
 }

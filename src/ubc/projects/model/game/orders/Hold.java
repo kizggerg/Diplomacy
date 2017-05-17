@@ -10,4 +10,8 @@ public class Hold implements Order {
         super();
     }
 
+    @Override
+    public String getType() {
+        return "Hold";
+    }
 }

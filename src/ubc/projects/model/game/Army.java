@@ -78,4 +78,8 @@ public class Army extends Unit {
         order = new Convoy((Land)destination, this, route);
     }
 
+    @Override
+    public String toString() {
+        return "Army at " + location.toString();
+    }
 }

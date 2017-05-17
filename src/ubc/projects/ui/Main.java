@@ -54,7 +54,7 @@ public class Main  extends Application {
         Button loadgame = new Button("Load from a previous save");
 
         newgame.setOnAction(e -> {
-            map = new Game_UI(new BorderPane(), 1000, 800, new Game());
+            map = new Game_UI(new BorderPane(), 1250, 800, new Game());
             window.setScene(map);
             window.centerOnScreen();
         });

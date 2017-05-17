@@ -15,4 +15,9 @@ public class Support implements Order {
         this.destination = destination;
         this.unitToSupport = unitToSupport;
     }
+
+    @Override
+    public String getType() {
+        return "Support";
+    }
 }

@@ -94,4 +94,9 @@ public class Fleet extends Unit {
         if (!(destination instanceof Land)) throw new IllegalOrderException("Cannot convoy Army to Sea");
         order = new Convoy((Land) destination, unitToConvoy);
     }
+
+    @Override
+    public String toString() {
+        return "Fleet at " + location.toString();
+    }
 }
