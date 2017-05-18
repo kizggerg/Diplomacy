@@ -3,8 +3,7 @@ package ubc.projects.model.game;
 import ubc.projects.model.map.Board;
 import ubc.projects.model.map.Country;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by greggzik on 2017-05-07.
@@ -63,6 +62,18 @@ public class Game {
 
     public String getPhase() {
         return season.toString() + " " + year;
+    }
+
+    /**
+     * Returns a collection of all countries currently in the game.
+     * @return      A collection of countries in game.
+     */
+    public Collection<Country> getCountries() {
+        Collection<Country> countries = new ArrayList<>();
+        for (Player player : players) {
+            countries.add(player.getCountry());
+        }
+        return countries;
     }
 
 }

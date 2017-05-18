@@ -34,6 +34,7 @@ public class Game_UI extends Scene {
     private VBox countries;
     private VBox orders;
     private String phase;
+    private Country selectedCountry;
 
 
     /**
@@ -101,6 +102,7 @@ public class Game_UI extends Scene {
      */
     private void updateOrdersPane(Country country) {
         orders.getChildren().clear();
+        selectedCountry = country;
 
         if (country == null) {
             Label initialOrderLabel = new Label("Select a Country to give orders.");
@@ -149,18 +151,54 @@ public class Game_UI extends Scene {
             }
         }
 
+        unitBox.getChildren().add(destination);
+
         switch (order) {
             case "Move"    : {
                 destination.setPromptText("Destination");
                 destination.getSelectionModel().selectedItemProperty().addListener( (v, a, option) -> addMoveOrder(unit, option));
                 break;
             }
-            case "Support" : break; //todo: Implement the rest
-            case  "Convoy" : break;
+            case "Support" : { //Todo: Fix window getting too large when supporting other players units.
+                destination.setPromptText("Location");
+                destination.getSelectionModel().selectedItemProperty().addListener( (a, b, locations) -> {
+                    ComboBox<Object> unitToSupport = new ComboBox<>();
+                    unitToSupport.setPromptText("Unit to Support");
+                    for (Unit unitToAdd : game.getPlayer(selectedCountry).getUnits())
+                        unitToSupport.getItems().add(unitToAdd);
+                    unitToSupport.getItems().add("Another Player...");
+                    unitBox.getChildren().add(unitToSupport);
+                    unitToSupport.getSelectionModel().selectedItemProperty().addListener( (d, e, supportingUnit) -> {
+                        if (supportingUnit.equals("Another Player...")) {
+                            ComboBox<Country> otherCountry = new ComboBox<>();
+                            otherCountry.setPromptText("Choose Country");
+                            for (Country country : game.getCountries()) {
+                                if (!country.equals(selectedCountry)) otherCountry.getItems().addAll(country);
+                            }
+                            unitBox.getChildren().add(otherCountry);
+                            otherCountry.getSelectionModel().selectedItemProperty().addListener( (f, g, thePlayer) -> {
+                                ComboBox<Unit> otherUnits = new ComboBox<>();
+                                otherUnits.setPromptText("Unit to Support");
+                                otherUnits.getItems().addAll(game.getPlayer(thePlayer).getUnits());
+                                unitBox.getChildren().add(otherUnits);
+                                otherUnits.getSelectionModel().selectedItemProperty().addListener((h, i, otherUnit) ->
+                                    addSupportOrder(unit, destination.getValue(), otherUnit));
+                            });
+                        } else {
+                            addSupportOrder(unit, destination.getValue(), (Unit) supportingUnit);
+                        }
+                    });
+                });
+
+                break;
+            }
+            case  "Convoy" : {
+                //Todo: Implement
+                break;
+            }
             default        : break;
         }
 
-        unitBox.getChildren().add(destination);
     }
 
     /**
@@ -171,6 +209,21 @@ public class Game_UI extends Scene {
     private void addMoveOrder(Unit unit, Place destination) {
         try {
             unit.setToMove(destination);
+        }
+        catch (IllegalOrderException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    /**
+     * Adds a support order to the given Unit.
+     * @param unit              The unit to add the support order.
+     * @param destination       The destination of the support order.
+     * @param unitToSupport     The unit which is being supported by unit.
+     */
+    private void addSupportOrder(Unit unit, Place destination, Unit unitToSupport) {
+        try {
+            unit.setToSupport(destination, unitToSupport);
         }
         catch (IllegalOrderException e) {
             System.out.println(e.getMessage());

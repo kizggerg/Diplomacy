@@ -2,6 +2,7 @@ package ubc.projects.model.map;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 
 /**
@@ -31,6 +32,10 @@ public abstract class Place {
 
     public void unoccupy() {
         occupied = false;
+    }
+
+    public Collection<Place> getAdjacentPlaces() {
+        return Collections.unmodifiableCollection(adjacentPlaces);
     }
 
     /**
