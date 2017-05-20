@@ -13,13 +13,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import ubc.projects.exceptions.IllegalOrderException;
-import ubc.projects.model.map.Country;
-import ubc.projects.model.game.Army;
-import ubc.projects.model.game.Game;
-import ubc.projects.model.game.Player;
-import ubc.projects.model.game.Unit;
-import ubc.projects.model.map.Land;
-import ubc.projects.model.map.Place;
+import ubc.projects.model.game.*;
+import ubc.projects.model.map.*;
 
 
 /**
@@ -153,47 +148,73 @@ public class Game_UI extends Scene {
 
         unitBox.getChildren().add(destination);
 
+        // For now, lets say Players can only use their own units to support/convoy. (todo: change this)
         switch (order) {
             case "Move"    : {
                 destination.setPromptText("Destination");
-                destination.getSelectionModel().selectedItemProperty().addListener( (v, a, option) -> addMoveOrder(unit, option));
+                destination.setOnAction(e -> addMoveOrder(unit, destination.getValue()));
                 break;
             }
-            case "Support" : { //Todo: Fix window getting too large when supporting other players units.
+            case "Support" : {
                 destination.setPromptText("Location");
-                destination.getSelectionModel().selectedItemProperty().addListener( (a, b, locations) -> {
-                    ComboBox<Object> unitToSupport = new ComboBox<>();
+                destination.setOnAction(e -> {
+                    ComboBox<Unit> unitToSupport = new ComboBox<>();
                     unitToSupport.setPromptText("Unit to Support");
-                    for (Unit unitToAdd : game.getPlayer(selectedCountry).getUnits())
-                        unitToSupport.getItems().add(unitToAdd);
-                    unitToSupport.getItems().add("Another Player...");
+                    for (Unit unitToAdd : game.getPlayer(selectedCountry).getUnits()) {
+                        if (!unitToAdd.equals(unit)) unitToSupport.getItems().add(unitToAdd);
+                    }
+                    unitToSupport.setOnAction(f -> addSupportOrder(unit, destination.getValue(), unitToSupport.getValue()));
                     unitBox.getChildren().add(unitToSupport);
-                    unitToSupport.getSelectionModel().selectedItemProperty().addListener( (d, e, supportingUnit) -> {
-                        if (supportingUnit.equals("Another Player...")) {
-                            ComboBox<Country> otherCountry = new ComboBox<>();
-                            otherCountry.setPromptText("Choose Country");
-                            for (Country country : game.getCountries()) {
-                                if (!country.equals(selectedCountry)) otherCountry.getItems().addAll(country);
-                            }
-                            unitBox.getChildren().add(otherCountry);
-                            otherCountry.getSelectionModel().selectedItemProperty().addListener( (f, g, thePlayer) -> {
-                                ComboBox<Unit> otherUnits = new ComboBox<>();
-                                otherUnits.setPromptText("Unit to Support");
-                                otherUnits.getItems().addAll(game.getPlayer(thePlayer).getUnits());
-                                unitBox.getChildren().add(otherUnits);
-                                otherUnits.getSelectionModel().selectedItemProperty().addListener((h, i, otherUnit) ->
-                                    addSupportOrder(unit, destination.getValue(), otherUnit));
-                            });
-                        } else {
-                            addSupportOrder(unit, destination.getValue(), (Unit) supportingUnit);
-                        }
-                    });
                 });
-
                 break;
             }
             case  "Convoy" : {
-                //Todo: Implement
+                Place unitLocation = unit.getLocation();
+                if (unit instanceof Army) {
+                    if (((Land) unitLocation).isLandlocked()) {
+                        destination.setPromptText("Cannot convoy landlocked units");
+                        destination.getItems().clear();
+                    }
+                    else {
+                        destination.setPromptText("Destination");
+                        destination.getItems().clear();
+                        for (Place place : Board.getInstance().getCoastalPlaces()) {
+                            if (!place.equals(unitLocation)) destination.getItems().add(place);
+                        }
+                        destination.setOnAction(e -> { //todo: add case for multiple convoys
+                            ComboBox<Unit> fleetToConvoy = new ComboBox<>();
+                            fleetToConvoy.setPromptText("Using Fleet...");
+                            for (Unit fleet : game.getPlayer(selectedCountry).getUnits()) {
+                                if (fleet.getLocation() instanceof Sea) fleetToConvoy.getItems().add(fleet);
+                            }
+                            fleetToConvoy.setOnAction(f -> addConvoyOrderArmy((Land) destination.getValue(),
+                                    (Army) unit, (Fleet) fleetToConvoy.getValue()));
+                            unitBox.getChildren().add(fleetToConvoy);
+                        });
+                    }
+                }
+                else {
+                    if (unit.getLocation() instanceof Sea) {
+                        destination.setPromptText("Destination of Convoy");
+                        destination.getItems().clear();
+                        destination.getItems().addAll(Board.getInstance().getCoastalPlaces());
+                        destination.setOnAction(e -> {
+                             ComboBox<Unit> armyToConvoy = new ComboBox<>();
+                             armyToConvoy.setPromptText("Army to Convoy");
+                             for (Unit aUnit : game.getPlayer(selectedCountry).getUnits()) {
+                                 if (aUnit instanceof Army && (!((Land)aUnit.getLocation()).isLandlocked()))
+                                     armyToConvoy.getItems().add(aUnit);
+                             }
+                             armyToConvoy.setOnAction(f -> addConvoyOrderFleet((Land) destination.getValue(), (
+                                      Fleet) unit, (Army) armyToConvoy.getValue()));
+                             unitBox.getChildren().add(armyToConvoy);
+                        });
+                    }
+                    else {
+                        destination.setPromptText("Cannot convoy a Unit from land");
+                        destination.getItems().clear();
+                    }
+                }
                 break;
             }
             default        : break;
@@ -224,6 +245,36 @@ public class Game_UI extends Scene {
     private void addSupportOrder(Unit unit, Place destination, Unit unitToSupport) {
         try {
             unit.setToSupport(destination, unitToSupport);
+        }
+        catch (IllegalOrderException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    /**
+     * Adds a convoy order to the given Army.
+     * @param destination       The destination for the Army to convoy.
+     * @param unitToConvoy      The Army to set the convoy order.
+     * @param route             The Singular Fleet Convoying the Army.
+     */
+    private void addConvoyOrderArmy(Land destination, Army unitToConvoy, Fleet route) {
+        try {
+            unitToConvoy.setToConvoy(destination, route);
+        }
+        catch (IllegalOrderException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    /**
+     * Adds a convoy order to the given Fleet
+     * @param destination       The destination for the Army to convoy.
+     * @param unitToSetOrder    The Fleet to set the convoy order.
+     * @param armyToConvoy      The Army being Convoyed by the fleet.
+     */
+    private void addConvoyOrderFleet(Land destination, Fleet unitToSetOrder, Army armyToConvoy) {
+        try {
+            unitToSetOrder.setToConvoy(destination, armyToConvoy);
         }
         catch (IllegalOrderException e) {
             System.out.println(e.getMessage());

@@ -21,6 +21,13 @@ public class Convoy implements Order {
         this.route = route;
     }
 
+    public Convoy(Land destination, Army unitToConvoy, Sea route){
+        this.destination = destination;
+        this.unitToConvoy = unitToConvoy;
+        this.route = new ArrayList<>();
+        this.route.add(route);
+    }
+
     public Convoy(Land destination, Army unitToConvy) {
         this.destination = destination;
         this.unitToConvoy = unitToConvy;
