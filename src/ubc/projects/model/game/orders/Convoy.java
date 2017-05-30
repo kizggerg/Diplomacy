@@ -38,4 +38,9 @@ public class Convoy implements Order {
     public String getType() {
         return "Convoy";
     }
+
+    @Override
+    public String toString() {
+        return "Convoying to " + destination.toString();
+    }
 }

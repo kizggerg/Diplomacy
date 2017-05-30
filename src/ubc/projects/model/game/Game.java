@@ -2,13 +2,13 @@ package ubc.projects.model.game;
 
 import ubc.projects.model.map.Board;
 import ubc.projects.model.map.Country;
+import ubc.projects.model.map.Place;
 
 import java.util.*;
 
 /**
  * Created by greggzik on 2017-05-07.
  * The Diplomacy Board Game
- * TODO: Test Basic Functionality
  */
 public class Game {
     private Board board;
@@ -74,6 +74,38 @@ public class Game {
             countries.add(player.getCountry());
         }
         return countries;
+    }
+
+    /**
+     * Returns true if orders from all players are confirmed.
+     * @return      true if all have confirmed orders.
+     */
+    public boolean readyToEndSeason() {
+        for (Player player : players) {
+            if (!player.areOrdersConfirmed()) return false;
+        }
+        return true;
+    }
+
+    /**
+     * Gets all players who have not confirmed their orders.
+     * @return      A collection of players.
+     */
+    public Collection<Player> getPlayersWithUnconfirmedOrders() {
+        Collection<Player> result = new ArrayList<>();
+
+        for (Player player : players) {
+            if (!player.areOrdersConfirmed()) result.add(player);
+        }
+
+        return result;
+    }
+
+    /**
+     * Resolves the orders for each player. TODO: Complete and Test Method
+     */
+    public void resolveOrders() {
+        //STUB
     }
 
 }

@@ -19,15 +19,25 @@ public class Player {
     private final Country country;
     private int numberOfSupplyCentres;  // If == 18 then this player wins
     private List<Unit> units;           // At the end of each year this size must be == numberOfSupplyCentres.
+    private boolean ordersConfirmed;
 
     public Player(Country country) {
         this.country = country;
         units = new ArrayList<>();
+        ordersConfirmed = false;
         initializeCentres();
     }
 
      public Country getCountry() {
         return country;
+     }
+
+     public boolean areOrdersConfirmed() {
+        return ordersConfirmed;
+     }
+
+     public void confirmOrders() {
+        ordersConfirmed = true;
      }
 
     /**

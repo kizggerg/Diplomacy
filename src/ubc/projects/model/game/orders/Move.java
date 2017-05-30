@@ -18,4 +18,9 @@ public class Move implements Order {
     public String getType() {
         return "Move";
     }
+
+    @Override
+    public String toString() {
+        return "Move to " + destination.toString();
+    }
 }

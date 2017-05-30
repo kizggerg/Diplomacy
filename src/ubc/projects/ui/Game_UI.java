@@ -11,6 +11,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import ubc.projects.exceptions.IllegalOrderException;
 import ubc.projects.model.game.*;
@@ -30,6 +31,7 @@ public class Game_UI extends Scene {
     private VBox orders;
     private String phase;
     private Country selectedCountry;
+    private VBox console;
 
 
     /**
@@ -53,6 +55,7 @@ public class Game_UI extends Scene {
         countries = new VBox(20);
         orders = new VBox(20);
         phase = this.game.getPhase();
+        console = new VBox(new Label(phase + " MESSAGES:"));
         setUpGeneralFrame();
         setUpCountries();
         updateOrdersPane(null);
@@ -65,16 +68,16 @@ public class Game_UI extends Scene {
         mainLayout.setLeft(countries);
         mainLayout.setRight(orders);
         HBox top = new HBox();
-        HBox bottom = new HBox();
+        HBox bottom = new HBox(50);
+        bottom.setAlignment(Pos.CENTER);
         Label title = new Label(phase);
         top.getChildren().add(title);
         Button execute = new Button("End Turn");
-        bottom.getChildren().add(execute);
+        execute.setOnAction(e -> handleEndTurn());
+        bottom.getChildren().addAll(execute, console);
         mainLayout.setTop(title);
-        mainLayout.setBottom(execute);
+        mainLayout.setBottom(bottom);
         mainLayout.setAlignment(title, Pos.CENTER);
-        mainLayout.setAlignment(countries, Pos.CENTER);
-        mainLayout.setAlignment(orders, Pos.CENTER);
     }
 
     /**
@@ -105,6 +108,12 @@ public class Game_UI extends Scene {
             orders.setAlignment(Pos.CENTER);
         }
 
+        else if (game.getPlayer(country).areOrdersConfirmed()) {
+            Label finalOrderLabel = new Label("Orders for " + country + " have already been submitted.");
+            orders.getChildren().add(finalOrderLabel);
+            orders.setAlignment(Pos.CENTER);
+        }
+
         else {
             Player selected = game.getPlayer(country);
 
@@ -123,6 +132,19 @@ public class Game_UI extends Scene {
                 orders.getChildren().add(unitBox);
             }
 
+            Button submitOrders = new Button("Submit Orders");
+            submitOrders.setOnAction(e -> {
+                Order_Alert_Box.display(selected);
+                if (selected.areOrdersConfirmed()) {
+                    Label confirmingOrder = new Label(selected.getCountry().toString() + " has submitted their orders.");
+                    console.getChildren().add(confirmingOrder);
+                    orders.getChildren().clear();
+                    Label finalOrderLabel = new Label("Orders for " + country + " have already been submitted.");
+                    orders.getChildren().add(finalOrderLabel);
+                }
+            });
+            orders.getChildren().add(submitOrders);
+            orders.setAlignment(Pos.CENTER);
         }
     }
 
@@ -148,7 +170,7 @@ public class Game_UI extends Scene {
 
         unitBox.getChildren().add(destination);
 
-        // For now, lets say Players can only use their own units to support/convoy. (todo: change this)
+        // For now, lets say Players can only use their own units to support/convoy. todo: change this
         switch (order) {
             case "Move"    : {
                 destination.setPromptText("Destination");
@@ -220,6 +242,20 @@ public class Game_UI extends Scene {
             default        : break;
         }
 
+    }
+
+    /**
+     * Determines whether it is appropriate to end the season:
+     * If not, displays an alert box of the players who have not submitted orders.
+     * If so, executes the orders.
+     */
+    private void handleEndTurn() {
+        if (game.readyToEndSeason()) {
+            game.resolveOrders();
+        }
+        else {
+            Player_Alert_Box.display(game);
+        }
     }
 
     /**

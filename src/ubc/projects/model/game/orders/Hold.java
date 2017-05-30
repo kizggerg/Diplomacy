@@ -14,4 +14,9 @@ public class Hold implements Order {
     public String getType() {
         return "Hold";
     }
+
+    @Override
+    public String toString() {
+        return "Hold";
+    }
 }

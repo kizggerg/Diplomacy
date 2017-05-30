@@ -1,7 +1,6 @@
 package ubc.projects.model.map;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by greggzik on 2017-04-04.
@@ -37,6 +36,21 @@ public class Board {
     public Place findPlace(String str) {
         if (containsPlace(str)) return places.get(str);
         else return null;
+    }
+
+    /**
+     * Gets a collection of all non-landlocked lands for the user.
+     * @return          Collection of all coastal lands.
+     */
+    public Collection<Place> getCoastalPlaces() {
+        Collection<Place> result = new ArrayList<>();
+
+        for (Place place : places.values()) {
+            if (place instanceof Land)
+                if (!((Land) place).isLandlocked()) result.add(place);
+        }
+
+        return Collections.unmodifiableCollection(result);
     }
 
     /**

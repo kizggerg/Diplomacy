@@ -20,4 +20,9 @@ public class Support implements Order {
     public String getType() {
         return "Support";
     }
+
+    @Override
+    public String toString() {
+        return "Supporting " + unitToSupport.toString() + " at/going to " + destination.toString();
+    }
 }
