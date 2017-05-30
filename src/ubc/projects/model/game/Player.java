@@ -1,12 +1,15 @@
 package ubc.projects.model.game;
 
 import ubc.projects.exceptions.PlaceDoesNotExistException;
+import ubc.projects.model.game.orders.Order;
+import ubc.projects.model.game.orders.Order_Manager;
 import ubc.projects.model.map.Board;
 import ubc.projects.model.map.Country;
 import ubc.projects.model.map.Exceptional_Capital_City;
 import ubc.projects.model.map.Place;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -147,6 +150,16 @@ public class Player {
 
             return false;
         }
+    }
+
+    /**
+     * Gets the orders for all Units.
+     * @return  A collection of orders.
+     */
+    public Collection<Order> getOrders() {
+        Collection<Order> result = new ArrayList<>();
+        for (Unit unit : units) result.add(unit.getOrder());
+        return result;
     }
 
     /**

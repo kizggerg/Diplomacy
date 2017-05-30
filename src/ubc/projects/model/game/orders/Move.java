@@ -7,12 +7,14 @@ import ubc.projects.model.map.Place;
  * Represents a unit moving to another location.
  */
 public class Move implements Order {
-    Place destination;
+    private Place destination;
 
     public Move(Place destination) {
         super();
         this.destination = destination;
     }
+
+    public Place getDestination() {return destination;}
 
     @Override
     public String getType() {

@@ -8,13 +8,17 @@ import ubc.projects.model.map.Place;
  * Represents a Unit supporting a unit.
  */
 public class Support implements Order {
-    Place destination;
-    Unit unitToSupport;
+    private Place destination;
+    private Unit unitToSupport;
 
     public Support(Place destination, Unit unitToSupport) {
         this.destination = destination;
         this.unitToSupport = unitToSupport;
     }
+
+    public Place getDestination() {return destination;}
+
+    public Unit getUnitToSupport() {return unitToSupport;}
 
     @Override
     public String getType() {

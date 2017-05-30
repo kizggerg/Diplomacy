@@ -1,8 +1,8 @@
 package ubc.projects.model.game;
 
+import ubc.projects.model.game.orders.Order_Manager;
 import ubc.projects.model.map.Board;
 import ubc.projects.model.map.Country;
-import ubc.projects.model.map.Place;
 
 import java.util.*;
 
@@ -102,10 +102,16 @@ public class Game {
     }
 
     /**
-     * Resolves the orders for each player. TODO: Complete and Test Method
+     * Resolves the orders for each player.
      */
     public void resolveOrders() {
-        //STUB
+        Collection<Unit> units = new ArrayList<>();
+
+        for (Player player : players) {
+            units.addAll(player.getUnits());
+        }
+
+        Order_Manager.getInstance().manageUnits(units);
     }
 
 }
